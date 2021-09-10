@@ -1,18 +1,40 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <Header>
+      <h3> 福州鼓楼法院</h3>
+    </Header>
+    <div class="home">
+      首页
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
-import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
+import { defineComponent, ref } from 'vue'
 
-@Options({
-  components: {
-    HelloWorld
+import Header from '@/components/Header.vue'
+
+export default defineComponent({
+  components: { Header },
+  setup() {
+    return {
+      activeKey: ref('1')
+    }
   }
 })
-export default class Home extends Vue {}
 </script>
+<style lang="less" scoped>
+.home {
+  background-color: #f0f0f0;
+  height: 100vh;
+  overflow: hidden;
+}
+.login-box {
+  width: 600px;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>

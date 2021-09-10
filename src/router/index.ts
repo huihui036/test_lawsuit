@@ -8,6 +8,43 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('../views/register/Register.vue')
+  },
+  {
+    path: '/admin/addCase',
+    name: 'addCase',
+    component: () => import('@/views/admin/case/AddCase.vue')
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    meta: {
+      requireLogin: true,
+      parent: '管理首页'
+    },
+    component: () => import('../views/admin/index.vue'),
+    children: [
+      {
+        path: '/admin/caseList',
+        name: 'caseList',
+        component: () => import('../views/admin/case/CaseList.vue')
+      },
+      {
+        path: '/admin/legalCaseDetails',
+        name: 'legalCaseDetails',
+        component: () => import('../views/admin/case/legalCaseDetails.vue')
+      }
+    ]
+  },
+
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
