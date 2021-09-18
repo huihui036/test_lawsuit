@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-09 17:00:34
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-17 20:00:49
+ * @LastEditTime: 2021-09-18 18:21:35
  * @Description:
 -->
 <template>
@@ -37,12 +37,35 @@
           <FileTable :tableList='certification'></FileTable>
 
           <br />
+          <div v-if="caseStatu != '待审核'">
+            <h5>审核意见</h5>
+            <table>
+              <tbody>
+                <tr>
+                  <td>审核日期</td>
+                  <td> {{auditTime}}</td>
+
+                  <td>审核结果</td>
+                  <td>{{caseStatu}}</td>
+                </tr>
+                <tr>
+                  <td>审核意见</td>
+                  <td colspan="3">{{auditOpinion}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <!-- <FileTable :tableList='cardIDList'></FileTable> -->
         </div>
 
       </div>
+      <!-- v-if="pesron !='当事人'" -->
+      <!-- && pesron !='当事人' -->
+      <!-- v-if="caseStatu =='待审核'" -->
+      <!-- v-if="caseStatu =='待审核'  && pesron !='当事人'" -->
       <div class="booter"
-           v-if="pesron !='当事人'">
+           v-if="caseStatu =='待审核'  && pesron !='当事人'">
 
         <a-button danger
                   @click="passBatchCase(0)">审核不通过</a-button>
@@ -99,6 +122,9 @@ export default defineComponent({
     const passFlag = ref<number>(0)
     const caseDatas = ref()
     const pesron = ref<string>()
+    const caseStatu = ref<string>()
+    const auditTime = ref()
+    const auditOpinion = ref()
     const passBatchCaseList: PassBatchType = reactive({
       uidList: [],
       uid: '',
@@ -127,7 +153,7 @@ export default defineComponent({
       const uid = route.query.uid
       if (passFlag.value === 0) {
         passBatchCaseList.uidList = [uid as string]
-        passBatch(passBatchCaseList)
+        unpassBatch(passBatchCaseList)
       } else if (passFlag.value === 1) {
         passBatchCaseList.uid = uid as string
         toLitigation(passBatchCaseList)
@@ -135,6 +161,17 @@ export default defineComponent({
         passBatchCaseList.uid = uid as string
         toMediate(passBatchCaseList)
       }
+      getCaseAllData(route.query.uid as string).then((res) => {
+        caseDatas.value = res.data //
+
+        prosecutionList.value = caseDatas.value.fileMap.pleadings
+        evidence.value = caseDatas.value.fileMap.evidence
+        certification.value = caseDatas.value.fileMap.certification
+        caseStatu.value = caseDatas.value.auditStatus
+
+        auditTime.value = caseDatas.value.auditTime
+        auditOpinion.value = caseDatas.value.auditOpinion
+      })
       visible.value = false
     }
     const passBatchCase = (type: number) => {
@@ -149,7 +186,10 @@ export default defineComponent({
       prosecutionList.value = store.state.caseData.fileMap.pleadings
       evidence.value = store.state.caseData.fileMap.evidence
       certification.value = store.state.caseData.fileMap.certification
+      caseStatu.value = store.state.caseData.auditStatus
       debugger
+      auditTime.value = store.state.caseData.auditTime
+      auditOpinion.value = store.state.caseData.auditOpinion
     }, 500)
 
     const cardIDList = [
@@ -159,6 +199,7 @@ export default defineComponent({
       }
     ]
     return {
+      caseStatu,
       prosecutionList,
       evidence,
       serviceList,
@@ -168,6 +209,8 @@ export default defineComponent({
       caseDatas,
       passBatchCaseList,
       pesron,
+      auditTime,
+      auditOpinion,
       passBatchCase,
       afterClose,
       handleOk,
@@ -182,6 +225,29 @@ export default defineComponent({
   button,
   label {
     margin: 0 10px;
+  }
+}
+tbody {
+  tr {
+    border: 1px solid rgb(214, 214, 214);
+    td {
+      border: 1px solid rgb(214, 214, 214);
+      padding: 5px 20px;
+    }
+    td:nth-child(1) {
+      background-color: #f1f1f1;
+      width: 20%;
+    }
+    td:nth-child(3) {
+      background-color: #f1f1f1;
+      width: 30%;
+    }
+    td:nth-child(4) {
+      width: 60%;
+    }
+    td:nth-child(2) {
+      width: 40%;
+    }
   }
 }
 .legalCaseDetails {

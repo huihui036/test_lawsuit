@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-10 09:54:31
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-17 21:34:47
+ * @LastEditTime: 2021-09-18 15:48:19
  * @Description:纠纷类型
 -->
 <template>
@@ -169,7 +169,6 @@ export default defineComponent({
       })
     }
     VueEvent.on('dispute', () => {
-      debugger
       store.commit('addCaseBaseData', disputeType)
       console.log(store.state.addCaseFrom)
     })

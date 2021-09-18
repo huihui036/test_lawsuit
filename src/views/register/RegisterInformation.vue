@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-06 21:08:01
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-18 10:42:49
+ * @LastEditTime: 2021-09-18 14:41:02
  * @Description:注册信息填写
 -->
 <template>
@@ -369,7 +369,7 @@ export default defineComponent({
         formState.authUserFileList1 = res.data.authUserFileList1
         formState.authUserFileList2 = res.data.authUserFileList2
 
-        formState.personType = res.data.personType
+        formState.personType = res.data.personType || '自然人'
         formState.paperworkClass = res.data.paperworkClass
         formState.personName = res.data.personName
         formState.paperworkNum = res.data.paperworkNum
@@ -400,7 +400,7 @@ export default defineComponent({
           formState.authUserFileList1 = res.data.authUserFileList1
           formState.authUserFileList2 = res.data.authUserFileList2
 
-          formState.personType = res.data.personType
+          formState.personType = res.data.personType || '自然人'
           formState.paperworkClass = res.data.paperworkClass
           formState.personName = res.data.personName
           formState.paperworkNum = res.data.paperworkNum
@@ -432,7 +432,7 @@ export default defineComponent({
           formState.authUserFileList1 = res.data.authUserFileList1
           formState.authUserFileList2 = res.data.authUserFileList2
 
-          formState.personType = res.data.personType
+          formState.personType = res.data.personType || '自然人'
           formState.paperworkClass = res.data.paperworkClass
           formState.personName = res.data.personName
           formState.paperworkNum = res.data.paperworkNum

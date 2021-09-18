@@ -30,6 +30,7 @@ export interface BaseLitigation {
   claims: string, // 诉讼请求
   factsAndReasons: string // 事实与理由
   subjectMatter: string //  金额
+  auditTime: string
   fileUidList: string[]
 }
 export interface UploadFile {
@@ -196,6 +197,7 @@ export interface CaseAllData {
   caseType: string // 类型
   baseLitigation: BaseLitigation
   caseUid: string
+  auditTime: string,
   certificationStatus: string // 用户认证状态
   cognizanceGroupName: string // 法院
   createUserLeaglePosition: string // 创建者身份
@@ -207,6 +209,7 @@ export interface CaseAllData {
   plaintiffPersonList: BasePersonList[]
   fileMap: any // 文件类型
   legalCase: string
+  auditOpinion: string
   subjectMatter: string
 }
 

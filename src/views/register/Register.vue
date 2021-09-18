@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-06 20:38:11
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-17 11:53:26
+ * @LastEditTime: 2021-09-18 14:57:38
  * @Description:注冊
 -->
 <template>
@@ -101,5 +101,6 @@ export default defineComponent({
 .register {
   width: 70vw;
   margin: auto;
+  margin: 40px auto;
 }
 </style>

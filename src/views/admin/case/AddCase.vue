@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-10 09:17:07
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-17 21:49:08
+ * @LastEditTime: 2021-09-18 15:45:56
  * @Description:新建案件
 -->
 <template>
@@ -30,6 +30,7 @@
       <div v-show="steps[current].sort == 3">
         <a-result title="起诉状提交成功">
           <template #extra>
+
             <a-button @click="gotToCaesList"
                       key="console"
                       type="primary">进入案件中心</a-button>
@@ -53,9 +54,18 @@
       <a-button v-if="current < steps.length - 2"
                 type="primary"
                 @click="next">下一步</a-button>
-      <a-button v-if="current ==2"
+      <a-tooltip v-if="current ==2 && !checked"
+                 placement="topLeft"
+                 title="请勾选确认授权">
+        <a-button :disabled='!checked'
+                  type="primary">立即提交</a-button>
+      </a-tooltip>
+
+      <a-button v-if="current ==2 && checked"
+                :disabled='!checked'
                 type="primary"
                 @click="next">立即提交</a-button>
+
       <a-button v-if="current == steps.length - 1"
                 type="primary"
                 @click="done">
@@ -164,10 +174,11 @@ export default defineComponent({
   margin: 20px auto;
 }
 .steps-action {
-  margin: 0 100px;
   width: 50%;
   position: relative;
   left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 10px;
+  overflow: hidden;
+  transform: translate(-50%, 20%);
 }
 </style>

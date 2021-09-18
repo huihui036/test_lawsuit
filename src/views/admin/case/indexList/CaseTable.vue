@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-09 15:28:07
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-18 00:11:59
+ * @LastEditTime: 2021-09-18 16:02:10
  * @Description:案件列表
 -->
 <template>
@@ -37,7 +37,15 @@
                 <a @click="legalCase(record.uid)">详情</a>
               </p>
               <p v-if="record.auditStatusName=='待审核' && authUserDepartment.roleName == '当事人'">
-                <a @click="deletCaseList(record.uid,)">删除</a>
+
+                <a-popconfirm title="确定删除?"
+                              ok-text="Yes"
+                              cancel-text="No"
+                              @confirm="confirm(record.uid)">
+                  <a href="#">删除</a>
+                  <!-- <a @click="deletCaseList(record.uid,)">删除</a> -->
+                </a-popconfirm>
+
               </p>
             </div>
 
@@ -76,7 +84,7 @@
     <a-form :model="BaseUserFrom"
             :label-col="labelCol"
             :wrapper-col="wrapperCol">
-      <a-form-item label="撤销类型">
+      <a-form-item label="选择修改人">
         <a-select v-model:value="BaseUserFrom.uid"
                   placeholder="请选择类型">
           <a-select-option v-for="item in getPersonList"
@@ -104,6 +112,7 @@
 
 <script lang='ts'>
 import { defineComponent, ref, reactive, UnwrapRef } from 'vue'
+import { message } from 'ant-design-vue'
 import AgenFrom from '@/views/admin/case/addCase/AgentFrom.vue'
 import {
   getCaseList,
@@ -219,6 +228,20 @@ export default defineComponent({
       statusType: 0
     }
     const getPersonList = ref()
+    const confirm = async (uid: string) => {
+      console.log(uid)
+      const uidList = [uid]
+      const { status } = await deletCase({ uidList })
+      // seleItem.value.splice()
+      getCaseList(pageData, SeachformState).then((res) => {
+        dataSource.value = res.data.records
+        VueEvent.emit('caseList', res.data)
+        if (res.status === 0) {
+          message.success(res.msg)
+        }
+      })
+    }
+
     const editableData: UnwrapRef<Record<string, CaseListData>> = reactive({})
     const pageData: PageData = reactive({
       size: 20,
@@ -287,7 +310,6 @@ export default defineComponent({
     // 删除案件
     const deletCaseList = async (uid: string, record: any) => {
       const uidList = [uid]
-
       const { status } = await deletCase({ uidList })
       // seleItem.value.splice()
       getCaseList(pageData, SeachformState).then((res) => {
@@ -354,6 +376,7 @@ export default defineComponent({
       BaseUserFrom,
       getPersonList,
       proxyShow,
+      confirm,
       showProxy,
       handleOkProxy,
       handleOkPesonAddres,

@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-13 09:13:37
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-18 14:02:09
+ * @LastEditTime: 2021-09-18 16:15:56
  * @Description:被告信息
 -->
 <template>
@@ -114,7 +114,7 @@ interface FileInfo {
 }
 interface FormState {
   claimType: string // 请求类型
-  subjectMatter: number // 金额
+  subjectMatter: any // 金额
   claims: string // 请求类型
   factsAndReasons: string // 理由
 }
@@ -126,8 +126,8 @@ export default defineComponent({
     const store = useStore<StoreProps>()
     const defenData: BasePersonList = {
       legalPositionNum: 1,
-      paperworkClass: '自然人', // 类别
-      personType: '身份证', // 证件类型
+      paperworkClass: '身份证', // 类别
+      personType: '自然人', // 证件类型
       fileMaps: [], // 文件
       personName: '', // 用户名称
       paperworkNum: '', // 证件号码
@@ -142,8 +142,8 @@ export default defineComponent({
     const defendantData = ref<BasePersonList[]>([
       {
         legalPositionNum: 1,
-        paperworkClass: '自然人', // 类别
-        personType: '身份证', // 证件类型
+        paperworkClass: '身份证', // 类别
+        personType: '自然人', // 证件类型
         fileMaps: [], // 文件
         personName: '', // 用户名称
         paperworkNum: '', // 证件号码
@@ -160,7 +160,7 @@ export default defineComponent({
     const fileListString = ref<string[]>([])
     const formState: UnwrapRef<FormState> = reactive({
       claimType: '', // 请求类型
-      subjectMatter: 100, // 金额
+      subjectMatter: '', // 金额
       claims: '',
       factsAndReasons: ''
     })

@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-10 10:38:31
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-18 10:02:16
+ * @LastEditTime: 2021-09-18 14:48:34
  * @Description:用户表单
 -->
 <template>
@@ -10,12 +10,14 @@
   <a-form v-for="(item,index) in fromdatalist"
           :key="index"
           :model="item"
+          :ref='Information+index'
+          :rules='rules'
           :label-col="labelCol"
           :wrapper-col="wrapperCol">
 
     <a-form-item label="主体类别">
 
-      <a-radio-group v-model:value="item.paperworkClass">
+      <a-radio-group v-model:value="item.personType">
         <a-radio value="自然人">自然人</a-radio>
         <a-radio value="法人">法人</a-radio>
         <a-radio value="非法人组织">非法人组织</a-radio>
@@ -23,7 +25,7 @@
     </a-form-item>
 
     <a-form-item label="证件类型">
-      <a-radio-group v-model:value="item.personType">
+      <a-radio-group v-model:value="item.paperworkClass ">
         <a-radio value="身份证">身份证</a-radio>
         <a-radio value="中国护照">中国护照</a-radio>
       </a-radio-group>
@@ -70,6 +72,7 @@
       </p>
       <p>
         <a-form-item label="身份证号"
+                     name='paperworkNum'
                      :wrapper-col="{ span: 15, offset:3}">
           <a-input v-model:value="item.paperworkNum" />
         </a-form-item>
@@ -136,6 +139,7 @@ import { useRoute } from 'vue-router'
 import { uploadFile } from '@/api/addCase/addCase'
 
 import { defineComponent, reactive, UnwrapRef, ref, PropType } from 'vue'
+import { validateCardId } from '@/hooks/UseFromRules'
 interface FileItem {
   uid: string
   name?: string
@@ -182,6 +186,7 @@ export default defineComponent({
     }
   },
   setup(props, context) {
+    const Information = ref()
     const businessList = ref<FileData[]>([]) // 英特执照
     const previewVisible = ref<boolean>(false)
     const previewImage = ref<string | undefined>('')
@@ -205,6 +210,16 @@ export default defineComponent({
     })
     const handleChange = (value: FileInfo, id: number) => {
       console.log(value, id)
+    }
+
+    const rules = {
+      paperworkNum: [
+        {
+          required: true,
+          validator: validateCardId(),
+          trigger: 'change'
+        }
+      ]
     }
 
     async function customRequest(datas: any, index: number) {
@@ -243,9 +258,10 @@ export default defineComponent({
       wrapperCol: { span: 6 },
       formState,
       imgeUrl,
+      Information,
       customRequest,
       handleChange,
-
+      rules,
       handlePreview
     }
   }

@@ -2,12 +2,12 @@
  * @Author: qinghui
  * @Date: 2021-09-10 10:38:31
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-17 23:41:05
+ * @LastEditTime: 2021-09-18 16:40:16
  * @Description:原告
 -->
 <template>
   <div>
-    {{createUserLeaglePosition}}
+
     <PersionFrom :fromdatalist='PersionFromData'
                  @handles="changeValue"></PersionFrom>
     <div class="add-row">
@@ -47,8 +47,8 @@ export default defineComponent({
     const PersionFromData = ref<BasePersonList[]>([
       {
         legalPositionNum: 1,
-        paperworkClass: '自然人', // 类别
-        personType: '身份证', // 证件类型
+        paperworkClass: '身份证', // 类别
+        personType: '自然人', //
         fileMaps: [], // 文件
         personName: '', // 用户名称
         paperworkNum: '', // 证件号码
@@ -90,14 +90,19 @@ export default defineComponent({
         PersionFromData.value[0].sex = sex || 0
         const personTypeiam =
           PersionFromDataProx.value.data.authUserFileList1[0]
-        PersionFromData.value[0].personType = personTypeiam
-          ? personTypeiam.fileClassName
-          : ''
-        PersionFromDataProx.value.data.authUserFileList1.forEach(
-          (item: any) => {
-            PersionFromData.value[0].fileMaps.push(item)
-          }
-        )
+        // PersionFromData.value[0].personType = personTypeiam
+        //   ? personTypeiam.fileClassName
+        //   : '自然人'
+        PersionFromData.value[0].fileMaps =
+          PersionFromDataProx.value.data.authUserFileList1
+        debugger
+        // PersionFromDataProx.value.data.authUserFileList1.forEach(
+        //   (item: any) => {
+        //     PersionFromData.value[0].fileMaps.push(item)
+        //     // PersionFromData.value[0].fileMaps =
+        //     //   PersionFromDataProx.value.data.authUserFileList1
+        //   }
+        // )
       }
     })
 

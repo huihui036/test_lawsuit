@@ -46,11 +46,15 @@ export default createStore<StoreProps>({
     caseData: {
       auditStatus: '', // 审核状态
       caseType: '', // 类型
+      auditTime: '',
+      auditOpinion: '',
       baseLitigation: {
         claimType: '', // 请求类型
         claims: '', // 诉讼请求
         factsAndReasons: '', // 事实与理由
         subjectMatter: '', //  金额
+        auditTime: '',
+
         fileUidList: []
       },
       caseUid: '',
@@ -104,7 +108,6 @@ export default createStore<StoreProps>({
     },
 
     claraAddCase(state) {
-      debugger
       state.addCaseFrom = {
         baseLitigation: {
           claimType: '', // 请求类型
