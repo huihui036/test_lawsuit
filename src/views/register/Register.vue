@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-06 20:38:11
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-09 13:52:56
+ * @LastEditTime: 2021-09-17 11:53:26
  * @Description:注冊
 -->
 <template>
@@ -68,6 +68,9 @@ export default defineComponent({
     }
     VueEvent.on('nextway', () => {
       next()
+    })
+    VueEvent.on('changeRister', () => {
+      current.value = 1
     })
     return {
       current,

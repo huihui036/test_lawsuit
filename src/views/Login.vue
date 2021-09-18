@@ -56,6 +56,7 @@ export default defineComponent({
 
     const toggleLogin = (index: number) => {
       count.value = index
+
       loginSelect.value.forEach((e) => {
         e.select = false
       })

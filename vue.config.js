@@ -2,10 +2,18 @@
  * @Author: qinghui
  * @Date: 2021-09-10 15:35:22
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-10 16:06:24
+ * @LastEditTime: 2021-09-17 19:52:55
  * @Description:
  */
 module.exports = {
+  publicPath: './',
+  chainWebpack: (config) => {
+    //设置index.html  的title   
+    config.plugin('html').tap(args => {
+      args[0].title = '诉源治理多元化调解平台'
+      return args
+    })
+  },
   devServer: {
     port: 8080,
     proxy: {

@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-08 10:38:17
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-10 16:32:19
+ * @LastEditTime: 2021-09-16 15:41:15
  * @Description:
 -->
 <template>
@@ -83,7 +83,7 @@ import {
   passwordCheck
 } from '@/hooks/UseFromRules'
 import VueEvent from '@/utils/event'
-import { getVerifyCode } from '@/api/login/login'
+import { getVerifyCode, register } from '@/api/login/login'
 export interface FormState {
   mobile: string
   verifyCode: string
@@ -107,7 +107,7 @@ export default defineComponent({
         { required: true, validator: validateMobile(), trigger: 'change' }
       ],
       verifyCode: isInput('验证码', 'blur', 6, 6),
-      password: isInput('密码', 'change', 6, 18),
+      password: isInput('密码', 'change', 8, 18),
       password2: [
         {
           required: true,
@@ -129,8 +129,9 @@ export default defineComponent({
       }, 1000)
 
       const result = await getVerifyCode(formState.mobile)
-
-      message.success(result.msg)
+      if (result.status === 0) {
+        message.success(result.msg)
+      }
     }
     const netAwait = async () => {
       // 验证表单
@@ -138,6 +139,10 @@ export default defineComponent({
       if (!resultCheck) return
       // 验证通过将值传递给父组件
       context.emit('getmobileData', formState)
+
+      const result = await register(formState)
+      sessionStorage.setItem('mobile', JSON.stringify(result.data))
+
       // 执行到第二部
       VueEvent.emit('nextway')
     }

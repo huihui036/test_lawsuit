@@ -1,10 +1,13 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import { UserData } from '@/api/login/loginTypes'
+import { requestData, getStorageData } from '@/hooks/common'
 import Home from '../views/Home.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
+    redirect: { name: 'login' },
     component: Home
   },
   {
@@ -20,6 +23,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/admin/addCase',
     name: 'addCase',
+    meta: { requireLogin: true, parent: '案件中心', title: '案件列表' },
     component: () => import('@/views/admin/case/AddCase.vue')
   },
   {
@@ -27,18 +31,44 @@ const routes: Array<RouteRecordRaw> = [
     name: 'admin',
     meta: {
       requireLogin: true,
-      parent: '管理首页'
+      parent: '首页'
     },
     component: () => import('../views/admin/index.vue'),
     children: [
       {
         path: '/admin/caseList',
         name: 'caseList',
+        meta: { requireLogin: true, parent: '案件管理', title: '案件列表' },
         component: () => import('../views/admin/case/CaseList.vue')
+      },
+      {
+        path: '/admin/userData',
+        name: 'userData',
+        meta: { requireLogin: true, parent: '个人设置', title: '用户信息' },
+        component: () => import('@/views/admin/userPage/userData.vue')
+      },
+      {
+        path: '/admin/changUserData',
+        name: 'changUserData',
+        meta: { requireLogin: true, parent: '个人设置', title: '修改密码' },
+        component: () => import('@/views/admin/userPage/changData.vue')
+      },
+      {
+        path: '/admin/userList',
+        name: 'userList',
+        meta: { requireLogin: true, parent: '用户列表', title: '用户列表' },
+        component: () => import('@/views/admin/system/userList.vue')
+      },
+      {
+        path: '/admin/examine',
+        name: 'userExamine',
+        meta: { requireLogin: true, parent: '用户列表', title: '用户审核' },
+        component: () => import('@/views/admin/system/userListData.vue')
       },
       {
         path: '/admin/legalCaseDetails',
         name: 'legalCaseDetails',
+        meta: { requireLogin: true, parent: '案件管理', title: '案件详情' },
         component: () => import('../views/admin/case/legalCaseDetails.vue')
       }
     ]
@@ -57,6 +87,18 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+// const authUserDepartment = getStorageData<UserData>('userData')
+// if (authUserDepartment) {
+//   config.headers.token = authUserDepartment.token
+// }
+router.beforeEach((to, form, next) => {
+  const authUserDepartment = getStorageData<UserData>('userData')
+  if (to.meta.requireLogin && !authUserDepartment) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
 })
 
 export default router

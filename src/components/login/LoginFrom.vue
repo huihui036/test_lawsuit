@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-06 19:55:35
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-10 15:49:39
+ * @LastEditTime: 2021-09-17 14:02:28
  * @Description:手机登入
 -->
 
@@ -28,10 +28,10 @@
       </a-input-group>
     </a-form-item>
     <a-form-item v-if="num==0"
-                 name="cardId">
+                 name="paperworkNum">
       <a-input class="line-none"
                size="large"
-               v-model:value="formState.cardId"
+               v-model:value="formState.paperworkNum"
                placeholder="请输入身份证号码" />
 
     </a-form-item>
@@ -69,11 +69,13 @@
 <script lang='ts'>
 import { useRouter } from 'vue-router'
 import { defineComponent, reactive, UnwrapRef, ref } from 'vue'
-
+import { login } from '@/api/login/login'
+import { Login } from '@/api/login/loginTypes'
+import VueEvent from '@/utils/event'
 import {
   isInput,
   validateMobile,
-  validateCardId,
+  validateCardIdCode,
   interceptFrom
 } from '@/hooks/UseFromRules'
 interface FormState {
@@ -86,7 +88,7 @@ export default defineComponent({
   props: {
     num: Number
   },
-  setup() {
+  setup(props, context) {
     const loginRef = ref()
     const router = useRouter()
     const value3 = ref<string>('Zhejiang')
@@ -94,14 +96,15 @@ export default defineComponent({
       mobile: [
         { required: true, validator: validateMobile(), trigger: 'change' }
       ],
-      cardId: [
-        { required: true, validator: validateCardId(), trigger: 'change' }
+      paperworkNum: [
+        { required: true, validator: validateCardIdCode(), trigger: 'change' }
       ],
       password: isInput('密码')
     }
-    const formState: UnwrapRef<FormState> = reactive({
+    const formState: UnwrapRef<Login> = reactive({
+      loginWay: 1,
       mobile: '',
-      cardId: '',
+      paperworkNum: '',
       password: ''
     })
 
@@ -109,7 +112,20 @@ export default defineComponent({
       const resultCheck = await interceptFrom(loginRef)
 
       if (!resultCheck) return
-      router.push({ name: 'caseList' })
+
+      formState.loginWay = props.num as number
+
+      const loginResult = await login(formState)
+      if (loginResult.status === 0) {
+        sessionStorage.setItem('userData', JSON.stringify(loginResult.data))
+        router.push({ name: 'caseList' })
+      } else if (loginResult.status === 30) {
+        router.push({ name: 'register' })
+        setTimeout(() => {
+          sessionStorage.setItem('mobile', JSON.stringify(loginResult.data))
+          VueEvent.emit('changeRister', loginResult.data)
+        }, 300)
+      }
     }
     // 跳转到注册
     const gotoRrgister = async () => {

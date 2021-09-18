@@ -2,7 +2,7 @@
  * @Author: qingHui
  * @Date: 2021-09-06 16:00:07
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-17 17:18:22
+ * @LastEditTime: 2021-09-17 17:20:26
  * @Description: 未登入头部
 -->
 <template>
@@ -23,30 +23,64 @@
         <h5>诉源治理多元化调解平台</h5>
       </li>
     </ul>
+    <ul>
+      <li class="out-login"
+          @click="logoutMeth">退出
+        <LogoutOutlined />
+      </li>
+    </ul>
   </div>
 </template>
 
 <script lang='ts'>
+import { logout } from '@/api/login/login'
+import { UserData } from '@/api/login/loginTypes'
+import { getStorageData } from '@/hooks/common'
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
+import { LogoutOutlined } from '@ant-design/icons-vue'
 export default defineComponent({
   name: '',
+  components: { LogoutOutlined },
   setup() {
-    return {}
+    const router = useRouter()
+    const logoutMeth = () => {
+      const authUserDepartment = getStorageData<UserData>('userData')
+      if (authUserDepartment) {
+        logout(authUserDepartment)
+        sessionStorage.removeItem('userData')
+        router.push({ name: 'login' })
+      }
+    }
+    return {
+      logoutMeth
+    }
   }
 })
 </script>
 <style lang='less' scoped>
+h3,
+h4,
+h5 {
+  color: #fff;
+}
+.out-login {
+  cursor: pointer;
+}
 .header {
   // height: 98px;
+  display: flex;
+  align-content: space-around;
+  justify-content: space-between;
   padding: 10px 0;
   background-color: #fff;
-  border-bottom: 1px solid rgba(158, 158, 158, 0.52);
+  color: #fff;
 }
 .logo-title {
-  width: 80%;
   line-height: 48px;
-  margin: auto;
+
   display: flex;
+  color: #fff;
   .logo {
     height: 48px;
     width: 48px;
@@ -56,9 +90,10 @@ export default defineComponent({
     color: #fff;
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    background-image: url('../assets/images/logo.png');
+    background-image: url('../../assets/images/logo.png');
   }
   .court-name {
+    color: #fff;
     margin: 0 10px 0 20px;
   }
   .line-title,

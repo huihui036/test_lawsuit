@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-08 14:20:59
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-09 14:36:30
+ * @LastEditTime: 2021-09-15 18:11:14
  * @Description:管理主页
 -->
 <template>
@@ -27,7 +27,7 @@
 <script lang='ts'>
 import { defineComponent, ref } from 'vue'
 import LeftNave from './home/LeftNave.vue'
-import Header from '@/components/Header.vue'
+import Header from '@/components/admin/Header.vue'
 export default defineComponent({
   name: '',
   components: { LeftNave, Header },

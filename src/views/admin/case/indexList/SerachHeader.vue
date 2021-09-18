@@ -2,29 +2,32 @@
  * @Author: qinghui
  * @Date: 2021-09-09 15:08:53
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-09 15:18:40
+ * @LastEditTime: 2021-09-16 13:15:03
  * @Description:搜索
 -->
 <template>
   <a-form layout="inline"
-          :model="formState"
-          @finish="handleFinish"
-          @finishFailed="handleFinishFailed">
+          :model="formState">
     <a-form-item>
-      <a-input v-model:value="formState.user"
-               placeholder="输入调解号/立案号">
-        <template #prefix>
-          <SearchOutlined style="color: rgba(0, 0, 0, 0.25)" />
-        </template>
+      <a-input v-model:value="formState.plaintiff"
+               placeholder="请输入原告">
+
       </a-input>
     </a-form-item>
     <a-form-item>
-      <a-button type="primary">
+      <a-input v-model:value="formState.defendant"
+               placeholder="请输入被告">
+
+      </a-input>
+    </a-form-item>
+    <a-form-item>
+      <a-button @click="seachFrom"
+                type="primary">
         查询
       </a-button>
     </a-form-item>
     <a-form-item>
-      <a-button>
+      <a-button @click="cleaarFroam">
         重置
       </a-button>
     </a-form-item>
@@ -32,33 +35,37 @@
 </template>
 
 <script lang='ts'>
-import { SearchOutlined } from '@ant-design/icons-vue'
+import VueEvent from '@/utils/event'
+
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { defineComponent, reactive, UnwrapRef } from 'vue'
-interface FormState {
-  user: string
-  password: string
+export interface FormState {
+  plaintiff: string
+  defendant: string
+  statusType: number
 }
 export default defineComponent({
   name: '',
-  components: {
-    SearchOutlined
-  },
+  components: {},
   setup() {
     const formState: UnwrapRef<FormState> = reactive({
-      user: '',
-      password: ''
+      plaintiff: '',
+      defendant: '',
+      statusType: 0
     })
-    const handleFinish = (values: FormState) => {
-      console.log(values, formState)
+    const seachFrom = () => {
+      VueEvent.emit('seachFormState', formState)
     }
-    const handleFinishFailed = (errors: ValidateErrorEntity<FormState>) => {
-      console.log(errors)
+    const cleaarFroam = () => {
+      formState.plaintiff = ''
+      formState.defendant = ''
+      VueEvent.emit('seachFormState', formState)
     }
+
     return {
-      formState,
-      handleFinish,
-      handleFinishFailed
+      cleaarFroam,
+      seachFrom,
+      formState
     }
   }
 })

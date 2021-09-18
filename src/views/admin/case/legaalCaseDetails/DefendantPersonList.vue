@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-09 16:51:40
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-18 11:20:53
+ * @LastEditTime: 2021-09-18 11:20:43
  * @Description:原告被告信息
 -->
 <template>
@@ -12,14 +12,14 @@
       {{caseDatas.plaintiffPersonList}}
     </p> -->
 
-    <table v-for="(item,index) in caseDatas.plaintiffPersonList "
+    <table v-for="(item,index) in caseDatas.defendantPersonList "
            :key="index"
            style="  width: 70%;">
       <tr>
         <td>姓名</td>
         <td>{{item.personName}}</td>
         <td>类型</td>
-        <td>{{item.paperworkClass}}</td>
+        <td>{{item.personType}}</td>
       </tr>
       <tr>
         <td>年龄</td>
@@ -29,7 +29,7 @@
       </tr>
       <tr>
         <td>证件类型</td>
-        <td>{{item.personType}}</td>
+        <td>{{item.paperworkClass}}</td>
         <td>工作单位</td>
         <td></td>
       </tr>

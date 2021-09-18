@@ -2,12 +2,12 @@
  * @Author: qinghui
  * @Date: 2021-09-08 20:40:43
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-09 11:47:36
+ * @LastEditTime: 2021-09-16 09:33:21
  * @Description:表单验证规则 封装
  */
 import { RuleObject } from 'ant-design-vue/es/form/interface'
 import { Ref } from 'vue'
-import { checkEmail, checkMobile, checkCardId } from './UseCheckData'
+import { checkEmail, checkMobile, checkCardId, checkCode } from './UseCheckData'
 
 // 普通字段验证
 function isInput(name: string, trigger: 'blur' | 'change' = 'blur', min = 0, max = 64): any[] {
@@ -49,6 +49,24 @@ function validateCardId() {
       if (!checkCardId(value)) {
         // eslint-disable-next-line prefer-promise-reject-errors
         return Promise.reject('请输入正确身份证')
+      }
+      return Promise.resolve()
+    }
+  }
+  return validateCardId
+}
+
+// 身份证 社会统一代码
+
+function validateCardIdCode() {
+  const validateCardId = async (rule: RuleObject, value: string) => {
+    if (value === '') {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      return Promise.reject('请输入')
+    } else {
+      if (!checkCardId(value) && !checkCode(value)) {
+        // eslint-disable-next-line prefer-promise-reject-errors
+        return Promise.reject('请输入正确 号码')
       }
       return Promise.resolve()
     }
@@ -100,4 +118,4 @@ async function interceptFrom(formRef: Ref<any>) {
   return checkForm
 }
 
-export { isInput, Emails, passwordCheck, validateMobile, validateCardId, interceptFrom }
+export { isInput, Emails, passwordCheck, validateMobile, validateCardId, validateCardIdCode, interceptFrom }

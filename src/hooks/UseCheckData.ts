@@ -2,7 +2,7 @@
  * @Author: qinghui
  * @Date: 2021-09-08 20:44:05
  * @LastEditors: qinghui
- * @LastEditTime: 2021-09-09 11:45:46
+ * @LastEditTime: 2021-09-16 09:28:30
  * @Description:正则验证
  */
 // 验证是否为邮箱
@@ -34,4 +34,13 @@ function checkCardId(cardId: string): boolean {
     return true
   }
 }
-export { checkEmail, checkMobile, checkCardId }
+// 社会统一代码
+function checkCode(code: string): boolean {
+  const isCardId = /^([159Y]{1})([1239]{1})([0-9ABCDEFGHJKLMNPQRTUWXY]{6})([0-9ABCDEFGHJKLMNPQRTUWXY]{9})([0-90-9ABCDEFGHJKLMNPQRTUWXY])$/
+  if (!isCardId.test(code)) {
+    return false
+  } else {
+    return true
+  }
+}
+export { checkEmail, checkMobile, checkCardId, checkCode }
